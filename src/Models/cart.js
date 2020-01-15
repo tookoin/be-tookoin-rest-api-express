@@ -68,10 +68,10 @@ module.exports = {
             })
         })
     },
-    deleteCart: (params, id) => {
+    deleteCartId: (param, id) => {
         return new Promise((resolve, reject) => {
             db.query("DELETE FROM cart WHERE id_buyer= ? AND id_cart=?", [
-                id, params.cartId
+                id, param
             ], (err, response) => {
                 if (!err)
                     resolve(response)

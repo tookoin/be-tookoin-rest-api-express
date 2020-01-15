@@ -36,9 +36,10 @@ module.exports = {
     },
     deleteCart: (req, res) => {
         const { params } = req;
+        let param = params.cartId;
         const token = req.headers['authorization'];
         const decoded = jwtdecode(token);
-        model.deleteCart(params, decoded['id_user']).then(response => {
+        model.deleteCartId(param, decoded['id_user']).then(response => {
             form.success(res, response);
         }).catch(err => console.log(err));
     },
