@@ -7,15 +7,15 @@ module.exports = {
 
         if (limit == 0) {
             let page = 1
-            let offset = (page - 1) * limit;
         } else {
             if (isNaN(query.page)) {
                 page = 1;
             } else {
                 let page = query.page || 1;
             }
-            let offset = (page - 1) * limit;
         }
+
+        let offset = (page - 1) * limit;
 
         let sort = query.sort || 'name_product';
         let order = query.order || 'asc';
