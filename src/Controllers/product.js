@@ -24,7 +24,7 @@ module.exports = {
             }
             data = response[0];
             form.allData(res, data, paginate);
-        })
+        }).catch(err => console.log(err))
     },
     postProduct: (req, res) => {
         const { body } = req;
