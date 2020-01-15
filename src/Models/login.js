@@ -26,7 +26,7 @@ module.exports = {
               console.log('Authentication Success');
               console.log(result[0].id_user)
               const payload = { 
-                id: result[0].id_user,
+                id_user: result[0].id_user,
                 email: email,
                 role
                };
