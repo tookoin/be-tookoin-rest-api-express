@@ -60,7 +60,7 @@ module.exports = {
         })
 
     },
-    postProduct: (body, id_seller) => {
+    postProduct: (body, id_seller, image) => {
         let date_created = new Date();
         let values = [
             [
@@ -68,7 +68,7 @@ module.exports = {
                 body.desc_product,
                 body.price,
                 body.id_category,
-                body.image,
+                image,
                 body.stock,
                 date_created,
                 date_created,
@@ -87,10 +87,10 @@ module.exports = {
                 })
         })
     },
-    patchProduct: (query, params, id_seller) => {
+    patchProduct: (body, params, id_seller) => {
         return new Promise((resolve, reject) => {
             db.query("UPDATE product SET ? where id_product= ? and id_seller = ?", [
-                query, params.id, id_seller
+                body, params.id, id_seller
             ], (err, response) => {
                 if (!err)
                     resolve(response)
