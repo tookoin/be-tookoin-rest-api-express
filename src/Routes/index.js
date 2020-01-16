@@ -7,11 +7,15 @@ const transaction = require('./transaction');
 
 const register = require('../Routes/Register/register');
 const login = require('../Routes/Login/login');
+const updateProfile = require('../Routes/Profile/profile');
+const resetPassword = require('./Reset_Password/password')
 
 Router.use('/product', product);
 Router.use('/register', register);
 Router.use('/login', login);
 Router.use('/cart', cart);
 Router.use('/transaction', transaction)
+Router.use('/profile', updateProfile);
+Router.use('/password', resetPassword);
 
 module.exports = Router;
