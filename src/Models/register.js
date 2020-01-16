@@ -1,4 +1,4 @@
-const db = require ('../Config/db');
+const db = require ('../Configs/db');
 const bcrypt = require ('bcryptjs');
 const validate = require ('../Helpers/validate_data');
 
