@@ -12,8 +12,8 @@ module.exports = {
 
             if (emailValidate == false || passwordValidate == false) {
                 resolve((msg = 'InvalidFormat'));
-            }
-
+            } else {
+            
             const checkAccount = await validate.emailExist(email)
             .then(result => {
                 if (result.emailExist == true) {
@@ -47,6 +47,8 @@ module.exports = {
                         console.log(err)
                     }
                 } );
+            }
+                
             }
         });
     } catch {

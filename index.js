@@ -17,6 +17,13 @@ index.use (cors ()); //manage cors, menentukan situs mana yang boleh akses, situ
 index.use (bodyParser.json ());
 index.use (bodyParser.urlencoded ({extended: false}));
 
+index.use(function(req, res, next){
+        res.locals.currentUser = req.users;
+//         // res.locals.success = req.flash('success');
+//         // res.locals.error = req.flash('error');
+        next();
+    })
+
 // Setting root endpoint
 index.use ('/', router); // localhost:8000/
 
