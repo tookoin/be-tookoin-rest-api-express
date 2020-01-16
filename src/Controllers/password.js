@@ -61,16 +61,25 @@ module.exports = {
   },
 
   resetPassword: (req, res) => {
-    // var EditUserMysql = {
-    //   token: req.params.token,
-    //   expires: new Date()
-    // };
     let token = req.params.token;
      let expires = new Date();
      let password = req.body.password;
      let confirm = req.body.confirm;
 
     model.resetPassword(token,expires,password, confirm)
+    .then((result)=> {
+      if (result == 'InvalidFormat') {
+        res.send('Password must be at least 1 Uppercase, 1 Lowercase, 1 Number')
+      } else if (result == 403) {
+        res.send('Password did not match')
+      }
+      else {
+        res.send('SUCCESS UPDATE PASSWORD')
+      }
+      }
+      )
+    .catch(()=>'FAILED UPDATE PASSWORD')
+
     
   },
 };
