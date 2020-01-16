@@ -8,7 +8,7 @@ module.exports = {
   },
 
   failed: (res, data) => {
-    res.json({
+    res.status(200).json({
       status: 400,
       msg: "FAILED",
       data
