@@ -5,30 +5,30 @@ const form = require('../Helpers/form');
 module.exports = {
     getTransaction: (req, res) => {
         const { params } = req;
-        // const token = req.headers['authorization'];
-        // const decoded = jwtdecode(token);
+        const token = req.headers['authorization'];
+        const decoded = jwtdecode(token);
         model
-            .getTransaction(params.id, 2)
+            .getTransaction(params.id, decoded['id_user'])
             .then(result => {
                 form.success(res, result)
             })
             .catch(err => console.log(err));
     },
     getTransactionBuyer: (req, res) => {
-        // const token = req.headers['authorization'];
-        // const decoded = jwtdecode(token);
+        const token = req.headers['authorization'];
+        const decoded = jwtdecode(token);
         model
-            .getTransactionBuyer(2)
+            .getTransactionBuyer(decoded['id_user'])
             .then(result => {
                 form.success(res, result)
             })
             .catch(err => console.log(err));
     },
     patchSID: (req, res) => {
-        // const token = req.headers['authorization'];
-        // const decoded = jwtdecode(token);
+        const token = req.headers['authorization'];
+        const decoded = jwtdecode(token);
         const { query, params } = req;
-        model.patchSID(query, params.id, 2).then(result => {
+        model.patchSID(query, params.id, decoded['id_user']).then(result => {
             form.success(res, result)
         }).catch(err => console.log(err));
     },
