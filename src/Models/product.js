@@ -2,23 +2,23 @@ const db = require('../Configs/db');
 
 module.exports = {
     getAllProduct: query => {
-        console.log(query);
-        let limit = query.limit || 20;
+        var limit = query.limit || 20;
 
         if (limit == 0) {
-            let page = 1
+            var page = 1
+            var offset = (page - 1) * limit;
         } else {
             if (isNaN(query.page)) {
-                page = 1;
+                var page = 1;
+                var offset = (page - 1) * limit;
             } else {
-                let page = query.page || 1;
+                var page = query.page || 1;
+                var offset = (page - 1) * limit;
             }
         }
 
-        let offset = (page - 1) * limit;
-
-        let sort = query.sort || 'name_product';
-        let order = query.order || 'asc';
+        var sort = query.sort || 'name_product';
+        var order = query.order || 'asc';
 
         if (query.name_product == null) {
             name = "";
