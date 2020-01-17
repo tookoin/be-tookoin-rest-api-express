@@ -3,6 +3,11 @@ const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const async = require("async");
 const bcrypt = require("bcryptjs");
+const TWILIO_ACCOUNT_SID = "ACf8f64e10832f911423c6cb38279d0fca";
+const TWILIO_AUTH_TOKEN = "a4a7d88fc0bd76d28865ef255f39e490";
+const TWILIO_PHONE_NUMBER = "+12107022772";
+
+const client = require("twilio")(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 
 const model = require("../Models/password");
 
@@ -79,5 +84,47 @@ module.exports = {
         }
       })
       .catch(() => "FAILED UPDATE PASSWORD");
+  },
+
+  phonePassword: (req, res) => {
+    // const token = (result) => {
+    crypto.randomBytes(4, function(err, buf) {
+      const token = buf.toString("hex");
+      if (!err) {
+        // const token = buf.toString("hex");
+        let phone = req.body.phone;
+        model
+          .phonePassword(phone, token)
+          .then(result => {
+            if (result == 400) {
+              res.send("There is no account regist with this phone number");
+            } else {
+              client.messages
+                .create({
+                  from: TWILIO_PHONE_NUMBER,
+                  to: req.body.phone,
+                  body:
+                    "This is code to reset your password :" +
+                    "\n\n" +
+                    token +
+                    "\n\n" +
+                    "Do not share with other!"
+                })
+                .then(() => {
+                  res.send(JSON.stringify({ success: true }));
+                })
+                .catch(err => {
+                  console.log(err);
+                  res.send(JSON.stringify({ success: false }));
+                });
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      } else {
+        console.log(err);
+      }
+    });
   }
 };
