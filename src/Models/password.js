@@ -91,6 +91,7 @@ module.exports = {
           resolve(result);
           console.log(err);
         } else {
+          console.log(result.length,'LNG');
           const EditUserMysql = {
             token: token,
             expires: new Date()

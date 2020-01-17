@@ -27,25 +27,27 @@ module.exports = {
   updateProfile: (req, res) => {
     upload(req, res, err => {
       if (req.fileValidationError) {
-        res
-          .status(400)
-          .json({
-            error: true,
-            message: "Only image file is allowed, try another file"
-          });
+        res.status(400).json({
+          error: true,
+          message: "Only image file is allowed, try another file"
+        });
       } else if (err) {
         res.status(400).json({ message: err, message: "File is not valid" });
       } else {
         const photo = req.file ? req.file.filename : req.file;
-        const { body, params } = req;
-        Object.assign(body, { photo: photo });
+        const { name_user, address, phone } = req.body;
+        // Object.assign(body, { photo: photo });
         const token = req.headers["authorization"];
         const decode = jwtdecode(token);
 
         model
-          .updatePofile(body, params, decode["id_user"])
+          .updatePofile(name_user, address, photo, phone, decode["id_user"])
           .then(result => {
-            response.success(res, result);
+            if (result == 403) {
+              res.json({ msg: "This phone number already used!" });
+            } else {
+              response.success(res, result);
+            }
           })
           .catch(err => {
             console.log(err);
