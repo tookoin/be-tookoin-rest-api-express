@@ -7,10 +7,14 @@ module.exports = {
         try{
          return new Promise (async (resolve, reject) => {
             // REGEX for Validate
+            let nameValidate = /[A-Z][a-zA-Z][^#&<>\"~;$^%{}?]{1,50}$/.test(name_user);
             let emailValidate = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
             let passwordValidate =  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/.test(password);
 
-            if (emailValidate == false || passwordValidate == false) {
+            if (nameValidate == false) {
+                resolve((msg= 'InvalidName'));
+            } else {
+                if (emailValidate == false || passwordValidate == false) {
                 resolve((msg = 'InvalidFormat'));
             } else {
             
@@ -50,6 +54,9 @@ module.exports = {
             }
                 
             }
+            }
+
+            
         });
     } catch {
         console.log('error bcrypt');
