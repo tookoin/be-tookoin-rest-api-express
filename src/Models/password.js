@@ -49,33 +49,30 @@ module.exports = {
           "SELECT * FROM user WHERE reset_password_token = ? and reset_password_expires >= DATE_ADD(?, INTERVAL +0 DAY)",
           [token, expires],
           function(err, result) {
-            if ((result.length = 0)) {
-              res
-                .status(400)
-                .send({
-                  msg: "Password reset token is invalid or has expired."
-                });
-              console.log(err);
-            } else if (password === confirm) {
-              const hashPassword = bcrypt.hashSync(password, 10);
-              console.log(hashPassword, "new");
+            if (result.length < 1) {
+              const result = 400;
+              resolve(result);
+            } else {
+              if (password === confirm) {
+                const hashPassword = bcrypt.hashSync(password, 10);
+                console.log(hashPassword, "new");
 
-              db.query(
-                "UPDATE user SET password= ?, reset_password_token=null ,reset_password_expires= null WHERE reset_password_token = ?",
-                [hashPassword, token],
-                function(err, result) {
-                  if (!err) {
-                    resolve(result);
-                  } else {
-                    reject(err);
-                    console.log(err);
+                db.query(
+                  "UPDATE user SET password= ?, reset_password_token=null ,reset_password_expires= null WHERE reset_password_token = ?",
+                  [hashPassword, token],
+                  function(err, result) {
+                    if (!err) {
+                      resolve(result);
+                    } else {
+                      reject(err);
+                      console.log(err);
+                    }
                   }
-                }
-              )
-            } 
-            else {
+                );
+              } else {
                 const result = 403;
                 resolve(result);
+              }
             }
           }
         );
