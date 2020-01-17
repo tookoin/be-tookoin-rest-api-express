@@ -11,23 +11,22 @@ module.exports = {
   getAllProduct: (req, res) => {
     const { query } = req;
 
-    // // REDIS
-    const { id } = req.params;
-    console.log('url request:', req.url);
+    //// REDIS
 
     redis_client.get(req.url, (err, data) => {
       if (err) {
         console.log(err);
         res.status(500).send(err);
       }
+
+      const resp = JSON.parse(data)
       //if no match found
       if (data != null) {
-        // res.send(data);
         console.log('get redis');
 
-        page = parseInt(data[2]);
-        limit = parseInt(data[1]);
-        dataAmount = data[3];
+        page = parseInt(resp[2]);
+        limit = parseInt(resp[1]);
+        dataAmount = resp[3];
 
         totalPage = Math.ceil(dataAmount / limit);
         nextPage = totalPage - page;
@@ -42,11 +41,7 @@ module.exports = {
           prev: prevPage
         };
 
-        // data = response[0];
-        // redis_client.setex(req.url, 3600, JSON.stringify(data));
-        // form.allData(res, data, paginate);
-
-        form.allData(res, JSON.parse(data[0]), paginate);
+        form.allData(res, resp[0], paginate);
 
       } else {
         //proceed to next middleware function
@@ -73,13 +68,12 @@ module.exports = {
         data = response[0];
         redis_client.setex(req.url, 3600, JSON.stringify(response));
 
-        // form.allData(res, data, paginate);
+        form.allData(res, data, paginate);
       })
       .catch(err => console.log(err));
       }
     });
     /////////////end redis////////////
-
     
   },
   postProduct: (req, res) => {
