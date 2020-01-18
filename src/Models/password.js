@@ -78,5 +78,42 @@ module.exports = {
         );
       }
     });
+  },
+
+  phonePassword: (phone, token) => {
+    return new Promise((resolve, reject) => {
+      db.query("SELECT * FROM user WHERE phone = ?", [phone], function(
+        err,
+        result
+      )
+      
+
+      {
+        // console.log('result',result) 
+        if (result.length == 0) {
+          const result = 400;
+          resolve(result);
+          console.log(err);
+        } else {
+          const EditUserMysql = {
+            token: token,
+            expires: new Date()
+          };
+          db.query(
+            "UPDATE user SET reset_password_token= ?,reset_password_expires= DATE_ADD(?, INTERVAL +1 DAY) WHERE phone = ?",
+            [EditUserMysql.token, EditUserMysql.expires, phone],
+            function(err, rows) {
+              if (!err) {
+                resolve(rows);
+                console.log(rows);
+              } else {
+                reject(err);
+                console.log(err);
+              }
+            }
+          );
+        }
+      });
+    });
   }
 };

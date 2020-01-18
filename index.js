@@ -3,12 +3,25 @@ const express = require('express');
 const logger = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
+
 const bodyParser = require('body-parser');
 
 // init router & port
 const router = require('./src/Routes/index')
 const index = express();
 const PORT = process.env.PORT || 8000;
+
+const redis = require("redis");
+// const port_redis = process.env.PORT_REDIS || 6379;
+const port_redis = 6379;
+const redis_client = redis.createClient(port_redis);
+
+// var redis = require("redis"),
+//     client = redis.createClient(port_redis);
+
+// client.on("error", function (err) {
+//     console.log("Error " + err);
+// });
 
 // Setting Middleware
 index.use(logger('dev'));
