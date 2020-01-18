@@ -3,12 +3,23 @@ const jwtdecode = require('jwt-decode');
 const form = require('../Helpers/form');
 
 module.exports = {
-    getTransaction: (req, res) => {
+    getTransactionDetailBuyer: (req, res) => {
         const { params } = req;
         const token = req.headers['authorization'];
         const decoded = jwtdecode(token);
         model
-            .getTransaction(params.id, decoded['id_user'])
+            .getTransactionDetailBuyer(params.id, decoded['id_user'])
+            .then(result => {
+                form.success(res, result)
+            })
+            .catch(err => console.log(err));
+    },
+    getTransactionDetailSeller: (req, res) => {
+        const { params } = req;
+        const token = req.headers['authorization'];
+        const decoded = jwtdecode(token);
+        model
+            .getTransactionDetailSeller(params.id, decoded['id_user'])
             .then(result => {
                 form.success(res, result)
             })

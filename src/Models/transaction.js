@@ -1,13 +1,30 @@
 const db = require('../Configs/db');
 
 module.exports = {
-    getTransaction: (transaction_id, id_buyer) => {
+    getTransactionDetailBuyer: (transaction_id, id_buyer) => {
         return new Promise((resolve, reject) => {
-            db.query("SELECT `transaction`.* , `transaction_detail`.* , `product`.`name_product` , `pr" +
-                "oduct`.`price` FROM `transaction_detail` INNER JOIN `transaction` ON(`transactio" +
+            db.query("SELECT `transaction`.* , `transaction_detail`.* , `product`.*" +
+                " FROM `transaction_detail` INNER JOIN `transaction` ON(`transactio" +
                 "n_detail`.`id_transaction` = `transaction`.`id_transaction`) INNER JOIN `product" +
                 "` ON (`transaction_detail`.`id_product` = `product`.`id_product`) WHERE `transac" +
                 "tion_detail`.`id_transaction` = ? AND `transaction`.`id_buyer`= ?",
+                [
+                    transaction_id, id_buyer
+                ], (err, response) => {
+                    if (!err) {
+                        resolve(response);
+                    } else {
+                        reject(err)
+                    }
+                })
+        })
+    }, getTransactionDetailSeller: (transaction_id, id_buyer) => {
+        return new Promise((resolve, reject) => {
+            db.query("SELECT `transaction`.* , `transaction_detail`.* , `product`.*" +
+                " FROM `transaction_detail` INNER JOIN `transaction` ON(`transactio" +
+                "n_detail`.`id_transaction` = `transaction`.`id_transaction`) INNER JOIN `product" +
+                "` ON (`transaction_detail`.`id_product` = `product`.`id_product`) WHERE `transac" +
+                "tion_detail`.`id_transaction` = ? AND `transaction`.`id_seller`= ?",
                 [
                     transaction_id, id_buyer
                 ], (err, response) => {
