@@ -1,6 +1,6 @@
 module.exports = {
   success: (res, data) => {
-    res.json({
+    res.status(200).send({
       status: 200,
       msg: "SUCCESS",
       data
@@ -8,7 +8,7 @@ module.exports = {
   },
 
   failed: (res, data) => {
-    res.json({
+    res.status(200).send({
       status: 400,
       msg: "FAILED",
       data
@@ -16,14 +16,14 @@ module.exports = {
   },
 
   emailAlreadylExist: res => {
-    res.status(403).send({ msg: "Email already exist" });
+    res.status(200).send({ msg: "Email already exist" });
   },
 
   invalidPassword: res => {
-    res.status(422).send({ msg: "Invalid Password" });
+    res.status(200).send({ msg: "Invalid Password" });
   },
 
   invalidUsername: res => {
-    res.status(401).send({ msg: "Username not registered" });
+    res.status(200).send({ msg: "Username not registered" });
   }
 };
