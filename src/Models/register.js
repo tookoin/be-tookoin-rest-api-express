@@ -23,8 +23,6 @@ module.exports = {
           if (emailValidate == false) {
             resolve((msg = 'Invalid Email'));
           } else if (passwordValidate == false) {
-
-            console.log('masuk invalid password')
             resolve((msg = 'Invalid Password'));
           } 
           else 

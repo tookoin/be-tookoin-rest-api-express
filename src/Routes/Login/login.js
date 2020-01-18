@@ -5,6 +5,6 @@ const controller = require('../../Controllers/login');
 
 // Register a user
 
-Router.post('/:role', controller.loginUser);
+Router.post('/', controller.loginUser);
 
 module.exports = Router 
