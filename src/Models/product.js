@@ -51,7 +51,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
             db.query(sql, (err, response) => {
                 db.query(sql2, (err, result) => {
-                    count = result.length;
+                    count = result.length || 0;
                     if (!err) resolve([response, limit, page, count]);
                     else reject(err);
                 })
