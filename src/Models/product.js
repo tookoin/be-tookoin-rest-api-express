@@ -112,5 +112,16 @@ module.exports = {
                 }
             })
         })
+    },
+    getEtalase: (id_seller) => {
+        return new Promise((resolve, reject) => {
+            db.query('SELECT * FROM product where id_seller=?', id_seller, (err, response) => {
+                if (!err) {
+                    resolve(response);
+                } else {
+                    reject(err);
+                }
+            })
+        })
     }
 }
