@@ -12,7 +12,6 @@ module.exports = {
     const { query } = req;
 
     //// REDIS
-
     redis_client.get(req.url, (err, data) => {
       if (err) {
         console.log(err);
