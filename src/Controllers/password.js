@@ -92,17 +92,19 @@ module.exports = {
       const token = buf.toString("hex");
       if (!err) {
         // const token = buf.toString("hex");
-        let phone = req.body.phone;
+        let phone = req.body.phone
+        // let phone = req.body.phone[0] == '0' ? req.body.phone.replace(req.body.phone[0], '+62') : req.body.phone
         model
           .phonePassword(phone, token)
           .then(result => {
             if (result == 400) {
-              res.send(JSON.stringify("There is no account regist with this phone number"));
+              // res.send(JSON.stringify("There is no account regist with this phone number"));
+              res.json({msg: "There is no account regist with this phone number"});
             } else {
               client.messages
                 .create({
                   from: TWILIO_PHONE_NUMBER,
-                  to: req.body.phone,
+                  to: phone,
                   body:
                     "This is code to reset your password :" +
                     "\n\n" +
