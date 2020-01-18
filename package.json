@@ -26,7 +26,8 @@
     "nodemailer": "^6.4.2",
     "nodemailer-express-handlebars": "^3.1.0",
     "passport": "^0.4.1",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "twilio": "^3.39.2"
   },
   "devDependencies": {
     "morgan": "^1.9.1"
