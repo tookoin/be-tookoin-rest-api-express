@@ -20,9 +20,15 @@ module.exports = {
         if (nameValidate == false) {
           resolve((msg = 'InvalidName'));
         } else {
-          if (emailValidate == false || passwordValidate == false) {
-            resolve((msg = 'InvalidFormat'));
-          } else {
+          if (emailValidate == false) {
+            resolve((msg = 'Invalid Email'));
+          } else if (passwordValidate == false) {
+
+            console.log('masuk invalid password')
+            resolve((msg = 'Invalid Password'));
+          } 
+          else 
+          {
             const checkAccount = await validate
               .emailExist(email)
               .then(result => {
