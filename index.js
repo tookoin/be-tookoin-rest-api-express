@@ -11,10 +11,10 @@ const router = require('./src/Routes/index')
 const index = express();
 const PORT = process.env.PORT || 8000;
 
-const redis = require("redis");
+// const redis = require("redis");
 // const port_redis = process.env.PORT_REDIS || 6379;
-const port_redis = 6379;
-const redis_client = redis.createClient(port_redis);
+// const port_redis = 6379;
+// const redis_client = redis.createClient(port_redis);
 
 // var redis = require("redis"),
 //     client = redis.createClient(port_redis);
