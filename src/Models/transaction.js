@@ -3,10 +3,10 @@ const db = require('../Configs/db');
 module.exports = {
     getTransactionDetailBuyer: (transaction_id, id_buyer) => {
         return new Promise((resolve, reject) => {
-            db.query("SELECT `transaction`.* , `transaction_detail`.* , `product`.*" +
+            db.query("SELECT `transaction`.* , `transaction_detail`.* , `product`.*, `user`.`name_user`" +
                 " FROM `transaction_detail` INNER JOIN `transaction` ON(`transactio" +
                 "n_detail`.`id_transaction` = `transaction`.`id_transaction`) INNER JOIN `product" +
-                "` ON (`transaction_detail`.`id_product` = `product`.`id_product`) WHERE `transac" +
+                "` ON (`transaction_detail`.`id_product` = `product`.`id_product`) INNER JOIN `user` ON (`transaction`.`id_buyer` = `user`.`id_user`) WHERE `transac" +
                 "tion_detail`.`id_transaction` = ? AND `transaction`.`id_buyer`= ?",
                 [
                     transaction_id, id_buyer
@@ -20,10 +20,10 @@ module.exports = {
         })
     }, getTransactionDetailSeller: (transaction_id, id_buyer) => {
         return new Promise((resolve, reject) => {
-            db.query("SELECT `transaction`.* , `transaction_detail`.* , `product`.*" +
+            db.query("SELECT `transaction`.* , `transaction_detail`.* , `product`.* ,`user`.`name_user`" +
                 " FROM `transaction_detail` INNER JOIN `transaction` ON(`transactio" +
                 "n_detail`.`id_transaction` = `transaction`.`id_transaction`) INNER JOIN `product" +
-                "` ON (`transaction_detail`.`id_product` = `product`.`id_product`) WHERE `transac" +
+                "` ON (`transaction_detail`.`id_product` = `product`.`id_product`) INNER JOIN `user` ON (`transaction`.`id_seller` = `user`.`id_user`) WHERE `transac" +
                 "tion_detail`.`id_transaction` = ? AND `transaction`.`id_seller`= ?",
                 [
                     transaction_id, id_buyer
@@ -38,17 +38,17 @@ module.exports = {
     },
     getTransactionBuyer: (id_buyer, params) => {
         if (params.status != 8) {
-            var sql = "SELECT `transaction`.* , `transaction_detail`.* , `product`.`name_product` , `pr" +
+            var sql = "SELECT `transaction`.*, `user`.`name_user` , `transaction_detail`.* , `product`.`name_product` , `pr" +
                 "oduct`.`price` FROM `transaction_detail` INNER JOIN `transac" +
                 "tion` ON(`transaction_detail`.`id_transaction` = `transaction`.`id_transaction`)" +
                 " INNER JOIN `product` ON (`transaction_detail`.`id_product` = `product" +
-                "`.`id_product`) WHERE `transaction`.`id_buyer`= " + id_buyer + " and `transaction`.`status` = " + params.status + " GROUP BY `transaction_detail`.`id_transaction`"
+                "`.`id_product`) INNER JOIN `user` ON (`transaction`.`id_seller` = `user`.`id_user`) WHERE `transaction`.`id_buyer`= " + id_buyer + " and `transaction`.`status` = " + params.status + " GROUP BY `transaction_detail`.`id_transaction`"
         } else {
-            var sql = "SELECT `transaction`.* , `transaction_detail`.*, `product`.`name_product` , `pr" +
+            var sql = "SELECT `transaction`.* , `user`.`name_user` , `transaction_detail`.*, `product`.`name_product` , `pr" +
                 "oduct`.`price` FROM `transaction_detail` INNER JOIN `transac" +
                 "tion` ON(`transaction_detail`.`id_transaction` = `transaction`.`id_transaction`)" +
                 " INNER JOIN `product` ON (`transaction_detail`.`id_product` = `product" +
-                "`.`id_product`) WHERE `transaction`.`id_buyer`= " + id_buyer + " GROUP BY `transaction_detail`.`id_transaction`"
+                "`.`id_product`) INNER JOIN `user` ON (`transaction`.`id_seller` = `user`.`id_user`) WHERE `transaction`.`id_buyer`= " + id_buyer + " GROUP BY `transaction_detail`.`id_transaction`"
         }
         return new Promise((resolve, reject) => {
             db.query(sql, (err, response) => {
@@ -63,17 +63,17 @@ module.exports = {
     },
     getTransactionSeller: (id_seller, params) => {
         if (params.status != 8) {
-            var sql = "SELECT `transaction`.* , `transaction_detail`.* , `product`.`name_product` , `pr" +
+            var sql = "SELECT `transaction`.* , `user`.`name_user`, `transaction_detail`.* , `product`.`name_product` , `pr" +
                 "oduct`.`price` FROM `transaction_detail` INNER JOIN `transac" +
                 "tion` ON(`transaction_detail`.`id_transaction` = `transaction`.`id_transaction`)" +
                 " INNER JOIN `product` ON (`transaction_detail`.`id_product` = `product" +
-                "`.`id_product`) WHERE `transaction`.`id_seller`= " + id_seller + " and `transaction`.`status` = " + params.status + " GROUP BY `transaction_detail`.`id_transaction`"
+                "`.`id_product`) INNER JOIN `user` ON (`transaction`.`id_buyer` = `user`.`id_user`) WHERE `transaction`.`id_seller`= " + id_seller + " and `transaction`.`status` = " + params.status + " GROUP BY `transaction_detail`.`id_transaction`"
         } else {
-            var sql = "SELECT `transaction`.* , `transaction_detail`.*, `product`.`name_product` , `pr" +
+            var sql = "SELECT `transaction`.* , `user`.`name_user`, `transaction_detail`.*, `product`.`name_product` , `pr" +
                 "oduct`.`price` FROM `transaction_detail` INNER JOIN `transac" +
                 "tion` ON(`transaction_detail`.`id_transaction` = `transaction`.`id_transaction`)" +
                 " INNER JOIN `product` ON (`transaction_detail`.`id_product` = `product" +
-                "`.`id_product`) WHERE `transaction`.`id_seller`= " + id_seller + " GROUP BY `transaction_detail`.`id_transaction`"
+                "`.`id_product`)  INNER JOIN `user` ON (`transaction`.`id_buyer` = `user`.`id_user`) WHERE `transaction`.`id_seller`= " + id_seller + " GROUP BY `transaction_detail`.`id_transaction`"
         }
         return new Promise((resolve, reject) => {
             db.query(sql, (err, response) => {
