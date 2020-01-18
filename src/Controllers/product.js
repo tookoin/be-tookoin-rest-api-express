@@ -114,5 +114,12 @@ module.exports = {
             }
             form.success(res, data);
         }).catch(err => console.log(err))
+    },
+    getEtalase: (req, res) => {
+        const token = req.headers['authorization'];
+        const decoded = jwtdecode(token);
+        model.getEtalase(decoded['id_user']).then(response => {
+            form.success(res, response);
+        }).catch(err => console.log(err))
     }
 }
