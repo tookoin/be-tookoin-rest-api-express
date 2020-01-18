@@ -17,8 +17,20 @@ module.exports = {
     getTransactionBuyer: (req, res) => {
         const token = req.headers['authorization'];
         const decoded = jwtdecode(token);
+        const { params } = req;
         model
-            .getTransactionBuyer(decoded['id_user'])
+            .getTransactionBuyer(decoded['id_user'], params)
+            .then(result => {
+                form.success(res, result)
+            })
+            .catch(err => console.log(err));
+    },
+    getTransactionSeller: (req, res) => {
+        const token = req.headers['authorization'];
+        const decoded = jwtdecode(token);
+        const { params } = req;
+        model
+            .getTransactionSeller(decoded['id_user'], params)
             .then(result => {
                 form.success(res, result)
             })

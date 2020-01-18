@@ -19,21 +19,54 @@ module.exports = {
                 })
         })
     },
-    getTransactionBuyer: (id_buyer) => {
-        return new Promise((resolve, reject) => {
-            db.query("SELECT `transaction`.* , `transaction_detail`.* , `product`.`name_product` , `pr" +
+    getTransactionBuyer: (id_buyer, params) => {
+        if (params.status != 8) {
+            var sql = "SELECT `transaction`.* , `transaction_detail`.* , `product`.`name_product` , `pr" +
                 "oduct`.`price` FROM `transaction_detail` INNER JOIN `transac" +
                 "tion` ON(`transaction_detail`.`id_transaction` = `transaction`.`id_transaction`)" +
                 " INNER JOIN `product` ON (`transaction_detail`.`id_product` = `product" +
-                "`.`id_product`) WHERE `transaction`.`id_buyer`= ?",
-                id_buyer, (err, response) => {
-                    console.log(response);
-                    if (!err) {
-                        resolve(response);
-                    } else {
-                        reject(err)
-                    }
-                })
+                "`.`id_product`) WHERE `transaction`.`id_buyer`= " + id_buyer + " and `transaction`.`status` = " + params.status + " GROUP BY `transaction_detail`.`id_transaction`"
+        } else {
+            var sql = "SELECT `transaction`.* , `transaction_detail`.*, `product`.`name_product` , `pr" +
+                "oduct`.`price` FROM `transaction_detail` INNER JOIN `transac" +
+                "tion` ON(`transaction_detail`.`id_transaction` = `transaction`.`id_transaction`)" +
+                " INNER JOIN `product` ON (`transaction_detail`.`id_product` = `product" +
+                "`.`id_product`) WHERE `transaction`.`id_buyer`= " + id_buyer + " GROUP BY `transaction_detail`.`id_transaction`"
+        }
+        return new Promise((resolve, reject) => {
+            db.query(sql, (err, response) => {
+                console.log(response);
+                if (!err) {
+                    resolve(response);
+                } else {
+                    reject(err)
+                }
+            })
+        })
+    },
+    getTransactionSeller: (id_seller, params) => {
+        if (params.status != 8) {
+            var sql = "SELECT `transaction`.* , `transaction_detail`.* , `product`.`name_product` , `pr" +
+                "oduct`.`price` FROM `transaction_detail` INNER JOIN `transac" +
+                "tion` ON(`transaction_detail`.`id_transaction` = `transaction`.`id_transaction`)" +
+                " INNER JOIN `product` ON (`transaction_detail`.`id_product` = `product" +
+                "`.`id_product`) WHERE `transaction`.`id_seller`= " + id_seller + " and `transaction`.`status` = " + params.status + " GROUP BY `transaction_detail`.`id_transaction`"
+        } else {
+            var sql = "SELECT `transaction`.* , `transaction_detail`.*, `product`.`name_product` , `pr" +
+                "oduct`.`price` FROM `transaction_detail` INNER JOIN `transac" +
+                "tion` ON(`transaction_detail`.`id_transaction` = `transaction`.`id_transaction`)" +
+                " INNER JOIN `product` ON (`transaction_detail`.`id_product` = `product" +
+                "`.`id_product`) WHERE `transaction`.`id_seller`= " + id_seller + " GROUP BY `transaction_detail`.`id_transaction`"
+        }
+        return new Promise((resolve, reject) => {
+            db.query(sql, (err, response) => {
+                console.log(response);
+                if (!err) {
+                    resolve(response);
+                } else {
+                    reject(err)
+                }
+            })
         })
     },
     patchSID: (query, id_transaction, id_buyer) => {
