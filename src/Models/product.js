@@ -72,12 +72,14 @@ module.exports = {
                 body.stock,
                 date_created,
                 date_created,
-                id_seller
+                id_seller,
+                body.unit,
+                body.label
             ]
         ]
         return new Promise((resolve, reject) => {
             db.query("INSERT INTO product(name_product, desc_product, price, id_category, image, stock" +
-                ", date_update, date_created, id_seller) values (?)",
+                ", date_update, date_created, id_seller, unit, label) values (?)",
                 values, (err, response) => {
                     if (!err) {
                         resolve(response);

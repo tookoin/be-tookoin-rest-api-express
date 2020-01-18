@@ -89,10 +89,12 @@ module.exports = {
                     .json({ message: err, message: 'File is not valid' })
             } else {
                 const { body, params } = req;
-                const image = req.file
-                    ? req.file.filename
-                    : req.file;
-                Object.assign(body, { "image": image });
+                if (req.file) {
+                    const image = req.file
+                        ? req.file.filename
+                        : req.file;
+                    Object.assign(body, { "image": image });
+                }
                 const token = req.headers['authorization'];
                 const decoded = jwtdecode(token);
                 model
