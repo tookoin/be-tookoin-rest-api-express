@@ -24,7 +24,7 @@ module.exports = {
           .then(result => {
             if (result === 'noEmail') {
               res.status(200).send({
-                status: 'Failed',
+                status: 'failed',
                 msg: 'No account with that email address exists.'
               });
             }
@@ -80,18 +80,41 @@ module.exports = {
       .resetPassword(token, expires, password, confirm)
       .then(result => {
         if (result == 'InvalidFormat') {
-          res.send(
-            'Password must be at least 1 Uppercase, 1 Lowercase, 1 Number'
-          );
+
+          res.status(200).send({
+            status: 400,
+            msg: 'Password must be at least 1 Uppercase, 1 Lowercase, 1 Number'
+          });
+          // res.send(
+          //   'Password must be at least 1 Uppercase, 1 Lowercase, 1 Number'
+          // );
         } else if (result == 400) {
-          res.send('Token Invalid');
+          // res.send('Token Invalid');
+          res.status(200).send({
+            status: 400,
+            msg: 'Token Invalid'
+          });
         } else if (result == 403) {
-          res.send('Password did not match');
+          // res.send('Password did not match');
+          res.status(200).send({
+            status: 403,
+            msg: 'Password did not match'
+          });
+
         } else {
-          res.send('SUCCESS UPDATE PASSWORD');
+          // res.send('SUCCESS UPDATE PASSWORD');
+          res.status(200).send({
+            status: 200,
+            msg: 'SUCCESS UPDATE PASSWORD'
+          });
         }
       })
-      .catch(() => 'FAILED UPDATE PASSWORD');
+      .catch(() => {
+        
+        res.status(200).send({
+          status: 400,
+          msg: 'FAILED UPDATE PASSWORD'
+        });});
   },
 
   phonePassword: (req, res) => {
@@ -107,9 +130,15 @@ module.exports = {
           .then(result => {
             if (result == 400) {
               // res.send(JSON.stringify("There is no account regist with this phone number"));
-              res.json({
-                msg: 'There is no account regist with this phone number'
+              // res.json({
+              //   msg: 'There is no account regist with this phone number'
+              // });
+
+              res.status(200).send({
+                status: 'failed',
+                msg: 'There is no account registered with this phone number.'
               });
+
             } else {
               client.messages
                 .create({
@@ -123,11 +152,19 @@ module.exports = {
                     'Do not share with other!'
                 })
                 .then(() => {
-                  res.send(JSON.stringify({ success: true }));
+                  // res.send(JSON.stringify({ success: true }));
+                  res.status(200).send({
+                    status: 'success',
+                    msg: 'Success send reset code, please check your device'
+                  });
                 })
                 .catch(err => {
-                  console.log(err);
-                  res.send(JSON.stringify({ success: false }));
+                  // console.log(err);
+                  // res.send(JSON.stringify({ success: false }));
+                  res.status(200).send({
+                    status: 'failed',
+                    msg: 'Failed send reset code, please try again later'
+                  });
                 });
             }
           })
