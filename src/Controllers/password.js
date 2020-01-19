@@ -45,6 +45,7 @@ module.exports = {
 
             smtpTransport.sendMail(mailOptions, function(err) {
               res.status(200).send({
+                status: 'success',
                 msg:
                   "An e-mail has been sent to " +
                   email +
