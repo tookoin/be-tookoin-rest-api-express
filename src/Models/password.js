@@ -9,12 +9,14 @@ module.exports = {
         result
       ) {
         if (result.length == 0) {
-          res
-            .status(200)
-            .send({ 
-              status: 'failed',
-              msg: "No account with that email address exists." });
-          console.log(err);
+
+          resolve((msg = 'noEmail'));
+          // res
+          //   .status(200)
+          //   .send({ 
+          //     status: 'failed',
+          //     msg: "No account with that email address exists." });
+          // console.log(err);
         } else {
           const EditUserMysql = {
             token: token,
