@@ -51,7 +51,7 @@ module.exports = {
     },
     postProduct: (req, res) => {
         upload(req, res, (err) => {
-            console.log(req.body);
+            console.log('body',req.body);
             if (req.fileValidationError) {
                 res
                     .status(400)
