@@ -90,7 +90,7 @@ module.exports = {
         let date = new Date();
         let exp = new Date(date.setDate(date.getDate() + 2));
         return new Promise((resolve, reject) => {
-            db.query("UPDATE TRANSACTION SET sid=?, STATUS=2, expired_date=? WHERE id_transaction = ? AND id_buyer= ?",
+            db.query("UPDATE `transaction` SET sid=?, status=2, expired_date=? WHERE id_transaction = ? AND id_buyer= ?",
                 [query.sid, exp, id_transaction, id_buyer], (err, response) => {
                     if (!err) {
                         resolve(response);
@@ -104,7 +104,7 @@ module.exports = {
         let date = new Date();
         let exp = new Date(date.setDate(date.getDate() + 2));
         return new Promise((resolve, reject) => {
-            db.query("UPDATE TRANSACTION SET STATUS=?, expired_date=? WHERE sid = ?",
+            db.query("UPDATE `transaction` SET status=?, expired_date=? WHERE sid = ?",
                 [status, exp, body.sid], (err, response) => {
                     if (!err) {
                         resolve(response);
@@ -118,7 +118,7 @@ module.exports = {
         let date = new Date();
         let exp = new Date(date.setDate(date.getDate() + 2));
         return new Promise((resolve, reject) => {
-            db.query("UPDATE TRANSACTION SET STATUS=?, expired_date=? WHERE id_transaction = ?",
+            db.query("UPDATE `transaction` SET status=?, expired_date=? WHERE id_transaction = ?",
                 [query.status, exp, params.id], (err, response) => {
                     if (!err) {
                         resolve(response);
